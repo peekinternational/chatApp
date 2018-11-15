@@ -8,6 +8,7 @@ const Schema = mongoose.Schema;
 
 const chatSchema = new Schema({
 	"senderId":String,
+	"senderName":String,
 	"recevierId":String,         //{ type: Schema.Types.ObjectId, ref: 'Users' }, for populate joins
 	"message":String,           //{ type: Schema.Types.ObjectId, ref: 'Users' },
 	"delete":{type:String,default:''},      

@@ -6,6 +6,7 @@ const bcrypt      = require('bcrypt');
 const userModel   = require('../model/users-model');
 const chatModel   = require('../model/chatModel');
 const groupsModel = require('../model/groupsModel');
+const notifiModel = require('../model/notificationModel');
 const mongoose    = require('mongoose');
 const helpers     = require('../helperfunctions/helpers');
 
@@ -64,10 +65,13 @@ module.exports = function(io,saveUser){
 
     router.chat = function(req,res){
         var sender = req.body.senderId;
+
+        var name = req.body.senderName;
         var recevier = req.body.recevierId;
         var message = req.body.message;
         newMessage = new chatModel({
             "senderId":sender,
+            "senderName":name,
             "recevierId":recevier,
             "message":message,
         });
@@ -79,6 +83,27 @@ module.exports = function(io,saveUser){
         })
     }
 
+
+        /* add notification to notification table*/
+        newNotification = new notifiModel({
+            "senderId":sender,
+            "recevierId":recevier,
+            "message":message,
+        });
+        newNotification.save(function(err,data){
+            if(err) throw err;
+        })
+    }
+    router.getNotification = (req,res) => {
+        var userId = req.params.userId;
+        notifiModel.find({recevierId:userId},function(err,data){
+            if (err) throw err;
+            notifiModel.count({recevierId:userId,isseen:false},function(err,count){
+            res.json({count:count,noti:data});
+            })
+            
+        })
+    }
     router.getChat = function(req,res){
         var sender = req.params.senderId;
         var receiver = req.params.recevierId;
@@ -186,8 +211,9 @@ module.exports = function(io,saveUser){
     router.updateChat = function(req,res){
         var chatId = req.params.id;
         var message = req.body.message;
-        chatModel.findByIdAndUpdate(chatId,{message:message},function(err,data){
+        chatModel.findByIdAndUpdate(chatId,{message:message},{new:true},function(err,data){
             if (err) throw err;
+            helper.addNewMessage(data);
             res.json(data);
         })
     }
@@ -203,7 +229,15 @@ module.exports = function(io,saveUser){
             })
         });
     }
+    router.notificationseen = (req,res) => {
+       userId =  req.body.userId;
+       notifiModel.update({recevierId:userId},{isseen:true},{multi:true},function(err,data){
+        if (err) throw err;
+        console.log(data);
+        res.json(data);
+       })
 
+    }
     router.deleteGroupMsg = function(req,res){
         var msgId = req.params.msgId;
         var type = req.params.type;

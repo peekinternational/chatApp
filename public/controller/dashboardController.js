@@ -22,15 +22,15 @@ app.controller("dashController", function($scope, $http, $window, $location, $ro
 
             }
         	/*login user */
-            $scope.usersInGroup     = 1;
-            $scope.countGroupMembers= 1;
-            $scope.groupOrUser      = '';
-        	$rootScope.user         = response.data;
-            $scope.busy             = false; // true then the user is on the call
-            $scope.chatIsActive     = true;
-            $scope.groupIsActive    = false;
-            $scope.reveiveGroupCall = false;
-            $scope.liveStream       = false;
+            $scope.usersInGroup      = 1;
+            $scope.countGroupMembers = 1;
+            $scope.groupOrUser       = '';
+        	$rootScope.user          = response.data;
+            $scope.busy              = false; // true then the user is on the call
+            $scope.chatIsActive      = true;
+            $scope.groupIsActive     = false;
+            $scope.reveiveGroupCall  = false;
+            $scope.liveStream        = false;
             /*get all users*/
     		$http.get("/getUsers")
     		    .then(function(response) {
@@ -42,6 +42,13 @@ app.controller("dashController", function($scope, $http, $window, $location, $ro
                 .then(function(response) {
                     $scope.allGroups = response.data;
                 });
+              /*get All notifications*/
+            $http.get("/getNotification/"+$rootScope.user._id)
+                .then(function(response) {
+                    $scope.notifications = response.data.noti;
+                    $scope.notiCount = response.data.count;
+                });
+             
 
             $scope.groupeActive = function() {
                 $scope.chatIsActive  = false;
@@ -87,6 +94,11 @@ app.controller("dashController", function($scope, $http, $window, $location, $ro
                 }
                 
     		}
+            $scope.seenNotification = () => {
+                $http.post('/notificationseen',{userId:$scope.user._id}).then(function(data){
+                    $scope.notiCount = 0;
+                });
+            }
             /* to show edit menu popup on right click on a message*/
             $scope.editMenu = function(chat){
                 $scope.editMsgId   = chat._id;
@@ -146,7 +158,7 @@ app.controller("dashController", function($scope, $http, $window, $location, $ro
                             //scrollbottom();
                         })
                     }else{
-                        $http.post('/chat',{"senderId":$scope.user._id,"recevierId":$scope.chatWith,"message":$scope.message})
+                        $http.post('/chat',{"senderId":$scope.user._id,"recevierId":$scope.chatWith,"senderName":$scope.user.name,"message":$scope.message})
                         .then(function(res){
                             $scope.message = '';
                             $scope.chats.push(res.data);
@@ -207,6 +219,9 @@ app.controller("dashController", function($scope, $http, $window, $location, $ro
                     $scope.liveUserId   = data.userId;
                     $scope.callType     = data.callType;
                     if( $scope.liveUserId != $scope.user._id )
+                        if ('serviceWorker' in navigator) {
+                            send(data.userName + ' is live now').catch(err => console.error(err));
+                        }
                         $('#joinbbtn').trigger('click');
                 }
                 
@@ -319,6 +334,9 @@ app.controller("dashController", function($scope, $http, $window, $location, $ro
             var audio = new Audio('audio/call.mp3');
     		socket.on('reveiceGroupVideoCall',function(data){
                 for(var i = 0;i < data.members.length; i++){
+                    if ('serviceWorker' in navigator) {
+                        send('you have a groupcall ' + data.groupName ).catch(err => console.error(err));
+                    }
                     $scope.toggleBtn(true);
                     $scope.countGroupMembers  = 1;
                     $scope.busy               = true;
@@ -384,6 +402,9 @@ app.controller("dashController", function($scope, $http, $window, $location, $ro
             socket.on('videoCallToFriend',function(data){
                 
                 if( data.friendId == $scope.user._id && $scope.busy == false ){
+                    if ('serviceWorker' in navigator) {
+                        send(data.callerName +' is calling').catch(err => console.error(err));
+                    }
                     $scope.toggleBtn(true);
                     $scope.busy               = true;
                     $scope.reveiveGroupCall   = false;
@@ -521,6 +542,11 @@ app.controller("dashController", function($scope, $http, $window, $location, $ro
                     if( $scope.user._id == msg.recevierId ){
                         var audio = new Audio('audio/message.mp3');
                         audio.play();
+                        if ('serviceWorker' in navigator) {
+                            send(msg.senderName + ' send a new message').catch(err => console.error(err));
+                        }else{
+                            alert('service worker not support');
+                        }
                     }
                     if( msg.id == $scope.connectionId ){
                         $scope.chats.push(msg.data);

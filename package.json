@@ -14,6 +14,7 @@
     "express": "*",
     "express-session": "^1.15.6",
     "mongoose": "^5.2.7",
-    "socket.io": "*"
+    "socket.io": "*",
+    "web-push": "^3.3.3"
   }
 }

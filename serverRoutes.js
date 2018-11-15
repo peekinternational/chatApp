@@ -30,5 +30,10 @@ module.exports = function(app,io,saveUser){
     app.get('/logout',chatCon.logout);
     app.post('/updateGroupChat/:id',chatCon.updateGroupChat);
     app.get('/deleteGroupMsg/:msgId/:type/:groupId',chatCon.deleteGroupMsg);
+<<<<<<< HEAD
+=======
+    app.get('/getNotification/:userId',chatCon.getNotification);
+    app.post('/notificationseen',chatCon.notificationseen);
+>>>>>>> 7e267746bdc0c8b04fa6d975a21f5d807eaab68b
    
 }

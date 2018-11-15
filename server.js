@@ -3,17 +3,24 @@
 * designBy => Muhammad sajid
 */
 
-const express   = require('express');
-const app       = express();
-const mongoose  = require('mongoose');
-const bcrypt    = require('bcrypt');
-const session   = require('express-session');
-const userModel = require('./model/users-model');
-const chatModel = require('./model/chatModel');
-var bodyParser  = require('body-parser');
+const express     = require('express');
+const app         = express();
+const mongoose    = require('mongoose');
+const bcrypt      = require('bcrypt');
+const session     = require('express-session');
+const userModel   = require('./model/users-model');
+const chatModel   = require('./model/chatModel');
+const bodyParser  = require('body-parser');
+const webpush     = require('web-push');
+const sslConfig   = require('./ssl-config');
+const options     = {
+    	key: sslConfig.privateKey,
+    	cert: sslConfig.certificate,
+      };
 const server    = require('http').Server(app);
 const io        = require('socket.io')(server);
 
+ 
 
 //*****
 //*****
@@ -30,8 +37,16 @@ mongoose.connect(db);
 //*****
 //***** 
 var users  = [];
+
 const port = 4000;
 var authUser;
+
+const publicVapidKey = 'BEU-89R8Bp4KeZEjOSQtFj-3aBvwgFE8iJ20y4CG2H4Mwip9jaX8dkldWsOPJtnp7fcqnQR1FbzVZeQ1YD7N5tA';
+const privateVapidKey = 'ntLibayiqZ-KpIC5swgVRep2ywsbn6zEVC0sS10mnaQ';
+const port = 4000;
+var authUser;
+
+
 //*****
 //*****
 // middle ware area 
@@ -48,6 +63,18 @@ app.use(bodyParser.json());
 // server start
 //*****
 //***** 
+
+webpush.setVapidDetails('mailto:muhammadsajid9005@gmail.com',publicVapidKey,privateVapidKey);
+app.post('/subscribe',(req,res) => {
+	//Get push subcription object
+	const subscription = req.body.subscription;
+	//send 201 resource created
+	res.status(201).json({});
+	//create payload
+	const payload = JSON.stringify({ title :req.body.title});
+	//pass object into send notification
+	webpush.sendNotification(subscription,payload).catch(err => console.error(err));
+});
 
 server.listen(port, () => {
   // eslint-disable-next-line no-console

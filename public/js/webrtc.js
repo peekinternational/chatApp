@@ -204,6 +204,14 @@
   const resumeVideo = () => {
     webrtc.resumeVideo();
   }
+
+  const mute = () => {
+    webrtc.mute();
+  }
+
+  const unmute = () => {
+    webrtc.unmute();
+  }
   
   const shareScreen = () => {
     webrtc.shareScreen();
