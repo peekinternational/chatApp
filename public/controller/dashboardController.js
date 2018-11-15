@@ -4,6 +4,7 @@
 */
 
 app.controller("dashController", function($scope, $http, $window, $location, $rootScope) {
+    
     /*save with whom user are chatting*/
     $scope.chatWith = '';
     /*save all chats */
@@ -22,6 +23,8 @@ app.controller("dashController", function($scope, $http, $window, $location, $ro
 
             }
         	/*login user */
+            /* store video of calling sound*/
+            var audio = new Audio('audio/call.mp3');
             $scope.usersInGroup      = 1;
             $scope.countGroupMembers = 1;
             $scope.groupOrUser       = '';
@@ -30,6 +33,7 @@ app.controller("dashController", function($scope, $http, $window, $location, $ro
             $scope.chatIsActive      = true;
             $scope.groupIsActive     = false;
             $scope.reveiveGroupCall  = false;
+            $scope.receiveCall       = false;
             $scope.liveStream        = false;
             /*get all users*/
     		$http.get("/getUsers")
@@ -126,6 +130,7 @@ app.controller("dashController", function($scope, $http, $window, $location, $ro
                 $scope.busy = false;
                 $scope.leaveRoom();
                 $scope.toggleBtn(false);
+                callCancelTimmer.stopCallTimmer();
                 if( $scope.reveiveGroupCall === false && $scope.liveStream === false){
                     socket.emit('calldisconnect',{friendId:friendId});
                 }
@@ -134,9 +139,16 @@ app.controller("dashController", function($scope, $http, $window, $location, $ro
             /*disconnect the call from other side through socket io*/
             socket.on('calldis',function(data){
                 if( data.friendId == $scope.user._id ){
-                    $scope.toggleBtn(false);
                     $scope.busy = false;
-                    $scope.leaveRoom();
+                    $scope.toggleBtn(false);
+                    if($scope.receiveCall === false){
+                        audio.pause();
+                        document.getElementById('incommingCall').style.display = 'none';
+                    }else{
+                        $scope.leaveRoom();
+                    }
+                    
+                    
                 }
             })
             /* send message to the user group and chat both handle in this function through sendType*/
@@ -260,16 +272,15 @@ app.controller("dashController", function($scope, $http, $window, $location, $ro
                     document.querySelector('.videoTab').style.display = 'block';
                 }
                 $scope.toggleBtn(true);
+                $scope.busy = true; // it means the user is on a call no one call this user this time 
                 if( $scope.chatIsActive == true ){
                     /*its a custom function to create a room of simple webrtc*/
                     createRoom(type,$scope.user._id+$scope.chatWith);
-                    $scope.busy = true; // it means the user is on a call no one call this user this time 
                     /* emit an socket io event to slow incoming call popup to friend*/
                     socket.emit('videoCall',{friendId:$scope.chatWith,callerName:$scope.user.name,callerId:$scope.user._id,callType:type});
                 }
                 if( $scope.groupeIsActive == true ){
                     createRoom( type, $scope.connectionId );
-                    $scope.busy = true;
                     socket.emit('groupvideoCall',{members:$scope.groupMembers,groupName:$scope.groupOrUser,groupId:$scope.connectionId,callerId:$scope.user._id,callType:type});
                 }
             }
@@ -328,8 +339,6 @@ app.controller("dashController", function($scope, $http, $window, $location, $ro
                 });
             })
 
-            /* store video of calling sound*/
-            var audio = new Audio('audio/call.mp3');
     		socket.on('reveiceGroupVideoCall',function(data){
                 for(var i = 0;i < data.members.length; i++){
                     if ('serviceWorker' in navigator) {
@@ -570,6 +579,7 @@ app.controller("dashController", function($scope, $http, $window, $location, $ro
             socket.on('startTimmer',function(data){
                 if( data.callerId == $scope.user._id || data.friendId == $scope.user._id ){
                     timmerObj.reset();
+                    $scope.receiveCall = true;
                     timmerObj.startCallTimmer();
                 }
                 if( data.callerId == $scope.user._id )
