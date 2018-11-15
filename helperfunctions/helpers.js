@@ -69,8 +69,7 @@ module.exports = function(io){
             helper.updateLastMsg(data,'recevier').then(function(){
                 helper.RTU();
             }).catch((err) => console.log(err));
-        }).catch((err) => console.log(err));
-	}
+        }).catch((err) => console.log(err));	}
 
 	helper.changeStatus = function (id,status,callback){
 		if(status){

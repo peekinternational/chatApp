@@ -20,6 +20,12 @@
           <li><a href="#">Page 3</a></li> 
         </ul>
         <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="javascript::void(0)" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-globe"></span> Notifications <span class="badge">5</span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Muhammad Sajid is live now</a></li>
+              <li><a href="#">Page 1-2</a></li>
+              <li><a href="#">Page 1-3</a></li>
           <li class="dropdown" ng-click="seenNotification()">
             <a href="javascript::void(0)" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-globe"></span> Notifications <span class="badge">{{notiCount}}</span></a>
             <ul class="dropdown-menu">
@@ -50,6 +56,123 @@
   <div class="container">
   <div class="messaging">
         <div class="inbox_msg">
+         <div class="inbox_people col-sm-4 hidden-lg hidden-md hidden-sm" id="mobile-view-contact" style="width: 100%; display: none;"> 
+            <div class="headind_srch">
+              <div class="recent_heading">
+
+                <!-- user profile image and name -->
+                <!-- user profile image and name -->
+                <!-- user profile image and name -->
+                <h4><div class="pro_img"><img src="images/user-profile.png" alt="sunil"></div> {{user.name}}</h4>
+              </div>
+              <!-- <div class="srch_bar">
+                <div class="input-group">
+                  <input type="text" class="search-bar"  placeholder="Search" >
+                  <span class="input-group-addon">
+                    <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+                  </span>
+                </div>
+              </div> -->
+            </div>
+            <div class="inbox_chat">
+              <uib-tabset active="activeForm" class="contact-tabs">
+
+                <!-- tab one content -->
+                <!-- recent tab start-->
+                <!-- recent tab start-->
+                <!-- recent tab start-->
+
+                <uib-tab select="chatActive()" index="0" heading="Recent">
+                  <div ng-repeat="userA in allUsers">
+                    <div class="chat_list" onclick="scrollbottom();$('.chat_list').removeClass('active_chat');$(this).closest('.chat_list').addClass('active_chat')" ng-click="startChat({type:'chat',user:userA})" ng-if="userA._id != user._id">
+                      <div class="chat_people">
+                        <div class="chat_img"><span class="status online" ng-if="userA.status == 'online'"></span><span class="status offline" ng-if="userA.status == 'offline'"></span><span class="status away" ng-if="userA.status == 'away'"></span> <img src="images/user-profile.png" alt="sunil"> </div>
+                        <div class="chat_ib">
+                          <h5>{{userA.name}}</h5>
+                          <div ng-repeat="msg in userA.chat">
+                          <p class="unreadMsg" ng-if="userA._id == msg.senderId && user._id == msg.recevierId && msg.unreadMsg > 0">New message <span class="badge">{{msg.unreadMsg}}</span></p>
+                            <p ng-if="msg.recevierId == userA._id && msg.senderId == user._id || msg.recevierId == user._id && msg.senderId == userA._id"><span class="wrap">{{msg.message }}</span> <span>{{msg.date | date:"MMM dd,yyyy 'at' h:mma"}}</span></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- users end -->
+                </uib-tab>
+
+
+                <!-- tab two content -->
+                <!-- contact tab start -->
+                <!-- contact tab start -->
+                <!-- contact tab start -->
+
+
+                <uib-tab select="chatActive()" index="1" heading="Contacts">
+                   <div ng-repeat="userA in allUsers">
+                     <div class="chat_list" ng-click="startChat({type:'chat',id:userA._id})" ng-if="userA._id != user._id">
+                       <div class="chat_people">
+                         <div class="chat_img"><span class="status online" ng-if="userA.status == 'online'"></span><span class="status offline" ng-if="userA.status == 'offline'"></span><span class="status away" ng-if="userA.status == 'away'"></span> <img src="images/user-profile.png" alt="sunil"> </div>
+                         <div class="chat_ib">
+                           <h5 onclick="scrollbottom();$('.chat_list').removeClass('active_chat');$(this).closest('.chat_list').addClass('active_chat')">{{userA.name}}</h5>
+                           <div ng-repeat="msg in userA.chat">
+                             <p  ng-if="msg.recevierId == user._id || msg.senderId == user._id">{{msg.message }}  {{msg.date | date:"MMM dd,yyyy 'at' h:mma"}}</p>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                  <!-- users end -->
+                </uib-tab>
+
+                <!-- tab three content -->
+                <!-- group tab start -->
+                <!-- group tab start -->
+                <!-- group tab start -->
+
+
+                <uib-tab select="groupeActive()" index="2" heading="Groups">
+                  <div style="margin: 10px">
+                    <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-info btn-circle btn-lg pull-right"><i class="glyphicon glyphicon-plus"></i></button>
+                  </div>
+                  <div ng-repeat="group in allGroups">
+                    <div ng-repeat="mem in group.members">
+                      <div ng-if="mem.id == user._id">
+                        <div class="chat_list" ng-click="startChat({type:'group',id:group._id,name:group.name,mem_id:user._id})">
+                          <div class="chat_people">
+                            <div class="chat_img"><img src="images/user-profile.png" alt="sunil"> </div>
+                            <div class="chat_ib">
+                              <h5>{{group.name}} <span ng-repeat="mem in group.members">
+                                <strong ng-if="mem.id == user._id && mem.isseen == false">new</strong></span></h5>
+                              <div>
+                                <p>{{group.lastMsg}}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </uib-tab>
+              </uib-tabset>
+              
+            </div>
+         </div>
+          <div class="inbox_people col-sm-4 hidden-xs" id="contact-bar">
+            <nav class="navbar navbar-inverse" id="navbar-contact">
+      <div class="navbar-header nav-tab">
+        <button type="button" class="navbar-toggle btn-contact" data-toggle="collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span> 
+        </button>
+        </div></nav>
+        <form role="search">
+    <div class="form-group srch_bars">
+      <i class="fa fa-search search-icon" aria-hidden="true"></i>
+        <input type="text" class="form-control txt-srch" placeholder="Search"><i class="fa fa-plus plus-icon" aria-hidden="true"></i>
+    </div>
+</form>
           <div class="container-fluid">
                      <div class="navbar-header">
                     <button type="button" id="side-btn" class="navbar-toggle navbar-contact" style="float: left;">
@@ -162,12 +285,15 @@
                    </div>
                  </div></div>
             <div class="inbox_people col-sm-4 hidden-xs" id="contact-bar">
+
             <div class="headind_srch">
               <div class="recent_heading">
 
                 <!-- user profile image and name -->
                 <!-- user profile image and name -->
                 <!-- user profile image and name -->
+                <h4><div class="pro_img"><img src="images/user-profile.png" alt="sunil"></div> {{user.name}}</h4>
+                  
 
                 <h4><div class="pro_img"><img src="images/user-profile.png" alt="sunil"></div> {{user.name}}</h4>
               </div>
@@ -190,6 +316,8 @@
 
                 <uib-tab select="chatActive()" index="0" heading="Recent">
                   <div ng-repeat="userA in allUsers">
+                    <div class="chat_list" ng-if="userA._id != user._id"  onclick="scrollbottom();$('.chat_list').removeClass('active_chat');$(this).closest('.chat_list').addClass('active_chat')" ng-click="startChat({type:'chat',user:userA})">
+                      <div class="chat_people" >
                     <div class="chat_list" ng-if="userA._id != user._id" onclick="scrollbottom();$('.chat_list').removeClass('active_chat');$(this).closest('.chat_list').addClass('active_chat')" ng-click="startChat({type:'chat',user:userA})">
                       <div class="chat_people">
                         <div class="chat_img"><span class="status online" ng-if="userA.status == 'online'"></span><span class="status offline" ng-if="userA.status == 'offline'"></span><span class="status away" ng-if="userA.status == 'away'"></span> <img src="images/user-profile.png" alt="sunil"> </div>
@@ -215,6 +343,7 @@
 
                 <uib-tab select="chatActive()" index="1" heading="Contacts">
                    <div ng-repeat="userA in allUsers">
+                     <div class="chat_list" ng-if="userA._id != user._id"  onclick="scrollbottom();$('.chat_list').removeClass('active_chat');$(this).closest('.chat_list').addClass('active_chat')"  ng-click="startChat({type:'chat',id:userA._id})">
                      <div class="chat_list" ng-if="userA._id != user._id" onclick="scrollbottom();$('.chat_list').removeClass('active_chat');$(this).closest('.chat_list').addClass('active_chat')" ng-click="startChat({type:'chat',id:userA._id})">
                        <div class="chat_people">
                          <div class="chat_img"><span class="status online" ng-if="userA.status == 'online'"></span><span class="status offline" ng-if="userA.status == 'offline'"></span><span class="status away" ng-if="userA.status == 'away'"></span> <img src="images/user-profile.png" alt="sunil"> </div>
@@ -272,6 +401,12 @@
 
 
           <div class="mesgs col-sm-8 mesgs1" id="msg-container">
+            <button type="button" id="side-btn" class="hidden-lg hidden-md hidden-sm" style="float: left;"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+        </button>
+            <div class="hidden-xs big-btn">
+            <strong class="status-bar">{{groupOrUser}} <span class="{{status}}-text">{{status}}</span></strong>
+            
+
             <div class="hidden-xs big-btn">
             <strong class="status-bar">{{groupOrUser}} <span class="{{status}}-text">{{status}}</span></strong>
             <button id="call" type="button" class="btn btn-default btn-sm" ng-click="videoCall('audio',user._id)">
@@ -283,6 +418,20 @@
             <button id="live" type="button" data-toggle="modal" data-target="#broadcastingModal" class="btn btn-info btn-sm">
               <span class="glyphicon glyphicon-signal"></span> live Broadcasting
             </button>
+          </div>
+
+          <div class="small-btn hidden-lg hidden-md hidden-sm">
+             <strong class="status-bar">{{groupOrUser}} <span class="{{status}}-text">{{status}}</span></strong>
+             <button id="call" type="button" class="btn btn-default btn-sm" ng-click="videoCall('audio',user._id)">
+              <span class="glyphicon glyphicon-earphone"></span>
+            </button>
+            <button id="videoCall" type="button" ng-click="videoCall('video')" class="btn btn-info btn-sm">
+              <span class="glyphicon glyphicon-facetime-video"></span>
+            </button>
+            <button id="live" type="button" data-toggle="modal" data-target="#broadcastingModal" class="btn btn-info btn-sm">
+              <span class="glyphicon glyphicon-signal"></span>
+            </button>
+          </div>
             </div>
 
               <div class="small-btn hidden-lg hidden-md hidden-sm">
@@ -471,6 +620,8 @@
         <div id="remotes"></div>
         <h4 id="timmer"></h4>
         <div class="text-center">
+          <button class="trans-btn" title="mute"><img src="images/mute1.png"></button>
+          <button class="trans-btn" title="unmute"><img src="images/unmute1.png"></button>
           <button class="trans-btn" onclick="mute()" title="mute"><img src="images/mute1.png"></button>
           <button class="trans-btn" onclick="unmute()" title="unmute"><img src="images/unmute1.png"></button>
           <button class="trans-btn" title="pause" onclick="pauseVideo()"><img src="images/pause1.png"></button>
@@ -488,6 +639,8 @@
         <div id="liveVideo"></div>
         <h4 id="timmer"></h4>
         <div class="text-center">
+          <button class="trans-btn" title="mute"><img src="images/mute.png"></button>
+          <button class="trans-btn" title="unmute"><img src="images/unmute.png"></button>
           <button class="trans-btn" onclick="mute()" title="mute"><img src="images/mute.png"></button>
           <button class="trans-btn" onclick="unmute()" title="unmute"><img src="images/unmute.png"></button>
           <button class="trans-btn" title="pause" onclick="pauseVideo()"><img src="images/pause.png"></button>
@@ -508,6 +661,9 @@
           <h4 id="audioTimmer"></h4>
         </div>
         <div class="incomming-btn-container">
+
+          <button class="trans-btn" title="mute"><img src="images/mute.png"></button>
+          <button class="trans-btn" title="unmute"><img src="images/unmute.png"></button>
           <button class="trans-btn" onclick="mute()" title="mute"><img src="images/mute.png"></button>
           <button class="trans-btn" onclick="unmute()" title="unmute"><img src="images/unmute.png"></button>
           <button class="trans-btn" title="call drop" ng-click="sendMessage('chat',1);disconnect(chatWith || callerId);removeconnectUser('afterReceive')"><img src="images/calldrop.png"></button>{{usersInGroup}}{{countGroupMembers}}
@@ -684,16 +840,19 @@
 <script type="text/javascript">
 
 $(function(){
+
+$(function(){
   $('.chat_list').click(function(){
     $('.chat_list').css("border-left", "1px solid red");
     $('.chat_list').addClass("active");
+    $('#msg-container').show();
   });
   $('#side-btn').click(function(){
     $('#mobile-view-contact').toggle();
     $('#msg-container').toggle();
      
   });
- 
+
   /* show first user messages as default*/
   setTimeout(function(){
     $('.chat_list:first').find('h5').trigger('click');

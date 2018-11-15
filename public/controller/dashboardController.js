@@ -53,6 +53,7 @@ app.controller("dashController", function($scope, $http, $window, $location, $ro
                     $scope.notiCount = response.data.count;
                 });
              
+
             $scope.groupeActive = function() {
                 $scope.chatIsActive  = false;
                 $scope.groupeIsActive = true;
@@ -64,6 +65,7 @@ app.controller("dashController", function($scope, $http, $window, $location, $ro
             }
             /*on click on a user this function get chat between them*/
     		$scope.startChat = function(obj){
+                console.log(obj);
                 /*obj is an object send from view it may be a chat or a group info*/
                 if( obj.type == 'chat' ){
 

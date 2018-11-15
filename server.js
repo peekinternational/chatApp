@@ -21,6 +21,7 @@ const server    = require('http').Server(app);
 const io        = require('socket.io')(server);
 
  
+
 //*****
 //*****
 //mongo db connection 
@@ -36,10 +37,15 @@ mongoose.connect(db);
 //*****
 //***** 
 var users  = [];
+
+const port = 4000;
+var authUser;
+
 const publicVapidKey = 'BEU-89R8Bp4KeZEjOSQtFj-3aBvwgFE8iJ20y4CG2H4Mwip9jaX8dkldWsOPJtnp7fcqnQR1FbzVZeQ1YD7N5tA';
 const privateVapidKey = 'ntLibayiqZ-KpIC5swgVRep2ywsbn6zEVC0sS10mnaQ';
 const port = 4000;
 var authUser;
+
 
 //*****
 //*****
@@ -57,6 +63,7 @@ app.use(bodyParser.json());
 // server start
 //*****
 //***** 
+
 webpush.setVapidDetails('mailto:muhammadsajid9005@gmail.com',publicVapidKey,privateVapidKey);
 app.post('/subscribe',(req,res) => {
 	//Get push subcription object
@@ -68,6 +75,7 @@ app.post('/subscribe',(req,res) => {
 	//pass object into send notification
 	webpush.sendNotification(subscription,payload).catch(err => console.error(err));
 });
+
 server.listen(port, () => {
   // eslint-disable-next-line no-console
   console.info('listening on %d', port);

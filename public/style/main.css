@@ -182,14 +182,23 @@ body#LoginForm{ background-image:url("../images/login-backgound.jpg"); backgroun
 .container{max-width:1170px; margin:auto;}
 img{ max-width:100%;}
 .inbox_people {
+<<<<<<< HEAD
+  background: #211f1f none repeat scroll 0 0;
+=======
   background: #000 none repeat scroll 0 0;
+>>>>>>> 7e267746bdc0c8b04fa6d975a21f5d807eaab68b
   float: left;
   overflow: hidden;
   width: 40%; 
   border-right:1px solid #000;
 }
 .inbox_msg {
+<<<<<<< HEAD
+ border-bottom: 1px solid #c4c4c4;
+ border-right: 1px solid #c4c4c4;
+=======
   border: 1px solid #c4c4c4;
+>>>>>>> 7e267746bdc0c8b04fa6d975a21f5d807eaab68b
   clear: both;
   overflow: hidden;
 }
@@ -727,6 +736,7 @@ img{ max-width:100%;}
 }
 #side-btn{
   border: 1px solid lightgray;
+  background: white;
 }
 #side-btn .icon-bar{
   background: black;
@@ -788,4 +798,47 @@ img{ max-width:100%;}
   .videoTab{
     width: 100%;
   }
+}
+@media (min-width: 768px){
+.navbar-toggle {
+    display: block;
+}
+}
+.nav-tab {
+  float: right;
+}
+#contact-bar{
+  padding-right: 0px; 
+  padding-left: 0px; 
+}
+#navbar-contact{
+  margin-bottom: 0px;
+  border-bottom: 1px solid #615f5f;
+  border-radius: 0px;
+}
+/*.srch_bars{
+  background-color: #696969
+}*/
+.txt-srch{
+  border-radius: 0px;
+  background-color: #211f1f;
+  border: 0px;
+  border-bottom: 1px solid #615f5f;
+}
+
+.plus-icon{
+    position: absolute;
+    right: 12px;
+    top: 63px;
+    color: #BEBCDE;
+}
+.search-icon{
+  position: absolute;
+  top: 60px;
+  color: #BEBCDE;
+}
+.btn-contact {
+  margin-right: 0px;
+  background: transparent;
+  border: 0px;
 }

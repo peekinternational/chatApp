@@ -55,6 +55,10 @@
             var vol = document.createElement('div');
             vol.id = 'volume_' + peer.id;
             vol.className = 'volume_bar';
+            /*video.onclick = function () {
+                video.style.width = video.videoWidth + 'px';
+                video.style.height = video.videoHeight + 'px';
+            };*/
             d.appendChild(vol);
             remotes.appendChild(d);
         }
@@ -103,6 +107,13 @@
       });
 
     webrtc.on('videoAdded', function (video, peer) {
+      //console.log('video added', peer);
+      /* call angular function from out side*/
+      /* call angular function from out side*/
+      /*var scope = angular.element(document.getElementById("MainWrap")).scope();
+      scope.$apply(function () {
+        scope.connectUsers();
+      });*/
       
      var remotes = document.getElementById('remotes');
      if (remotes) {
@@ -113,6 +124,10 @@
          var vol = document.createElement('div');
          vol.id = 'volume_' + peer.id;
          vol.className = 'volume_bar';
+         /*video.onclick = function () {
+             video.style.width = video.videoWidth + 'px';
+             video.style.height = video.videoHeight + 'px';
+         };*/
          d.appendChild(vol);
          remotes.appendChild(d);
      }
@@ -183,11 +198,9 @@
       console.log(roominfo);
     });
   }
-  
   const pauseVideo = () => {
     webrtc.pauseVideo();
   }
-
   const resumeVideo = () => {
     webrtc.resumeVideo();
   }

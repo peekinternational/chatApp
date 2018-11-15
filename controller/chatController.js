@@ -65,6 +65,7 @@ module.exports = function(io,saveUser){
 
     router.chat = function(req,res){
         var sender = req.body.senderId;
+
         var name = req.body.senderName;
         var recevier = req.body.recevierId;
         var message = req.body.message;
@@ -80,6 +81,9 @@ module.exports = function(io,saveUser){
             helper.addNewMessage(data);
             res.json(data);
         })
+    }
+
+
         /* add notification to notification table*/
         newNotification = new notifiModel({
             "senderId":sender,
@@ -234,7 +238,6 @@ module.exports = function(io,saveUser){
        })
 
     }
-
     router.deleteGroupMsg = function(req,res){
         var msgId = req.params.msgId;
         var type = req.params.type;
