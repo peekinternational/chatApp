@@ -40,13 +40,7 @@
   <div class="container">
   <div class="messaging">
         <div class="inbox_msg">
-           <div class="container-fluid">
-           <div class="navbar-header">
-          <button type="button" id="side-btn" class="navbar-toggle navbar-contact" style="float: left;">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span> 
-        </button>
+          
          <div class="inbox_people col-sm-4 hidden-lg hidden-md hidden-sm" id="mobile-view-contact" style="width: 100%; display: none;"> 
             <div class="headind_srch">
               <div class="recent_heading">
@@ -54,7 +48,6 @@
                 <!-- user profile image and name -->
                 <!-- user profile image and name -->
                 <!-- user profile image and name -->
-
                 <h4><div class="pro_img"><img src="images/user-profile.png" alt="sunil"></div> {{user.name}}</h4>
               </div>
               <!-- <div class="srch_bar">
@@ -150,16 +143,29 @@
               
             </div>
          </div>
-       </div></div>
           <div class="inbox_people col-sm-4 hidden-xs" id="contact-bar">
+            <nav class="navbar navbar-inverse" id="navbar-contact">
+      <div class="navbar-header nav-tab">
+        <button type="button" class="navbar-toggle btn-contact" data-toggle="collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span> 
+        </button>
+        </div></nav>
+        <form role="search">
+    <div class="form-group srch_bars">
+      <i class="fa fa-search search-icon" aria-hidden="true"></i>
+        <input type="text" class="form-control txt-srch" placeholder="Search"><i class="fa fa-plus plus-icon" aria-hidden="true"></i>
+    </div>
+</form>
             <div class="headind_srch">
               <div class="recent_heading">
 
                 <!-- user profile image and name -->
                 <!-- user profile image and name -->
                 <!-- user profile image and name -->
-
                 <h4><div class="pro_img"><img src="images/user-profile.png" alt="sunil"></div> {{user.name}}</h4>
+                  
               </div>
               <!-- <div class="srch_bar">
                 <div class="input-group">
@@ -262,7 +268,8 @@
 
 
           <div class="mesgs col-sm-8 mesgs1" id="msg-container">
-            
+            <button type="button" id="side-btn" class="hidden-lg hidden-md hidden-sm" style="float: left;"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+        </button>
             <div class="hidden-xs big-btn">
             <strong class="status-bar">{{groupOrUser}} <span class="{{status}}-text">{{status}}</span></strong>
             
@@ -678,6 +685,7 @@
   $('.chat_list').click(function(){
     $('.chat_list').css("border-left", "1px solid red");
      $('.chat_list').addClass("active");
+     $('#msg-container').show();
    });
 </script>
 <script type="text/javascript">
