@@ -38,9 +38,6 @@ mongoose.connect(db);
 //***** 
 var users  = [];
 
-const port = 4000;
-var authUser;
-
 const publicVapidKey = 'BEU-89R8Bp4KeZEjOSQtFj-3aBvwgFE8iJ20y4CG2H4Mwip9jaX8dkldWsOPJtnp7fcqnQR1FbzVZeQ1YD7N5tA';
 const privateVapidKey = 'ntLibayiqZ-KpIC5swgVRep2ywsbn6zEVC0sS10mnaQ';
 const port = 4000;

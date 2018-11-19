@@ -81,9 +81,6 @@ module.exports = function(io,saveUser){
             helper.addNewMessage(data);
             res.json(data);
         })
-    }
-
-
         /* add notification to notification table*/
         newNotification = new notifiModel({
             "senderId":sender,
